@@ -1,7 +1,12 @@
 import type { Context } from 'koishi'
+import '@koishijs/plugin-server'
+import { createReadStream } from 'node:fs'
+import { resolve } from 'node:path'
 
 export const name = 'feature-tester'
-
+export const inject = {
+	required: [ "server" ],
+};
 export const usage = `
 <style>
   .mt-radio-zh, .mt-radio-en, .mt-radio-ja, .mt-radio-ru { display: none; }
@@ -89,8 +94,16 @@ export const usage = `
     <p>Исследование команд, промежуточного ПО, сервисов, баз данных, планировщика задач, Web API и т. д. — чтобы увидеть, на что способен.</p>
   </div>
 </div>
+
+<div style="border-radius: 10px; border: 1px solid #ddd; padding: 16px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <h2 style="margin-top: 0; color: #fa541c;">🎬 新宝岛</h2>
+  <video controls playsinline preload="metadata" style="width: 100%; max-width: 100%; border-radius: 8px; display: block; background: #000;" src="/feature-tester/xbdao.mp4"></video>
+</div>
 `;
 
 export function apply(ctx: Context) {
-  // write your plugin here
+  ctx.server.get('/feature-tester/xbdao.mp4', (koa) => {
+    koa.type = 'video/mp4'
+    koa.body = createReadStream(resolve(__dirname, '..', 'assets', '新宝岛.mp4'))
+  })
 }
